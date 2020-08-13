@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".JoinLoginActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:id="@+id/toolbar"
+        app:title="Ngila 9 to 5"
+        >
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+
+    <com.stepstone.stepper.StepperLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/stepperLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:ms_stepperType="progress_bar"
+        app:ms_backButtonColor="#fafafa"
+        app:ms_nextButtonColor="#fafafa"
+        app:ms_completeButtonColor="#fafafa"
+        app:ms_bottomNavigationBackground="?attr/colorPrimaryVariant"/>
+</LinearLayout>
