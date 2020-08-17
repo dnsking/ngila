@@ -7,6 +7,9 @@ public class NgilaUser {
     private String insurance;
     private String accountType;//sort key
     private String carModel;
+    private String password;
+    private String numberPlate;
+    private String driversLicense;
 
     public String getFirstName() {
         return firstName;
@@ -54,5 +57,29 @@ public class NgilaUser {
 
     public void setCarModel(String carModel) {
         this.carModel = carModel;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getNumberPlate() {
+        return numberPlate;
+    }
+
+    public void setNumberPlate(String numberPlate) {
+        this.numberPlate = numberPlate;
+    }
+
+    public String getDriversLicense() {
+        return driversLicense;
+    }
+
+    public void setDriversLicense(String driversLicense) {
+        this.driversLicense = driversLicense;
     }
 }

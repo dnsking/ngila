@@ -61,7 +61,7 @@
             android:layout_gravity="center"
             android:textAlignment="center"/>
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/redo"
+            android:id="@+id/resend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Resend"
