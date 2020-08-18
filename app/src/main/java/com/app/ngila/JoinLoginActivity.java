@@ -6,20 +6,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.app.ngila.data.Authentication;
 import com.app.ngila.data.NgilaUser;
 import com.app.ngila.fragments.carowner.CarOwnerJoinFragment;
 import com.app.ngila.fragments.driver.DriverJoinFragment;
 import com.app.ngila.fragments.onboarding.BaseNewAccountFragment;
 import com.app.ngila.fragments.onboarding.OtpFragment;
 import com.app.ngila.fragments.passenger.PassengerJoinFragment;
+import com.app.ngila.network.NetworkContentHelper;
+import com.app.ngila.network.actions.MatchCodeNetworkAction;
+import com.app.ngila.network.actions.SignInNetworkAction;
+import com.app.ngila.utils.Utils;
+import com.google.gson.Gson;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
+
+import okhttp3.Response;
 
 public class JoinLoginActivity extends AppCompatActivity {
 
@@ -51,6 +60,7 @@ public class JoinLoginActivity extends AppCompatActivity {
                 if(newStepPosition==1){
                     ngilaUser = baseNewAccountFragment.getUser();
                     otpFragment.setNgilaUser(ngilaUser);
+                    sendOpt();
                 }
 
 
@@ -66,6 +76,58 @@ public class JoinLoginActivity extends AppCompatActivity {
     }
 
 
+    public void sendOpt(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    NetworkContentHelper.AddContent(JoinLoginActivity.this,
+                            new SignInNetworkAction(ngilaUser.getPhoneNumber()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public void match(String opt){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+
+                    MatchCodeNetworkAction matchCodeNetworkAction=  new MatchCodeNetworkAction(ngilaUser.getPhoneNumber(),opt,ngilaUser);
+                    Response response = NetworkContentHelper.ApiGatewayCaller(matchCodeNetworkAction);
+
+                    String result = response.body().string();
+                    App. Log("MatchKey "+result);
+
+                        Authentication authenticationResult = new Gson().fromJson(result,Authentication.class);
+
+                    Utils.SaveAccountType(JoinLoginActivity.this,accType);
+                    Utils.SaveUserName(JoinLoginActivity.this,ngilaUser.getPhoneNumber());
+                    Utils.SaveString(App.UserData,JoinLoginActivity.this,new Gson().toJson(ngilaUser));
+
+                    if(accType.equals(App.AccountTypeCarOwner)){
+                        Intent intent = new Intent(JoinLoginActivity.this,CarOwnerActivity.class);
+                        startActivity(intent);
+                    }
+                    else if(accType.equals(App.AccountTypeDriver)){
+                        Intent intent = new Intent(JoinLoginActivity.this, PassengerActivity.class);
+                        startActivity(intent);
+                    }
+                    else if(accType.equals(App.AccountTypePassenger)){
+                        Intent intent = new Intent(JoinLoginActivity.this,PassengerActivity.class);
+                        startActivity(intent);
+                    }
+                    finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
     public  class StepperAdapter extends AbstractFragmentStepAdapter {
 
         public StepperAdapter(FragmentManager fm, Context context) {

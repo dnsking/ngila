@@ -10,6 +10,7 @@ public class DriverOrder {
     private String arriveTime;
     private String distance;
     private String charge;
+    private String rideId;
 
 
     public DriverOrder(){}
@@ -83,5 +84,13 @@ public class DriverOrder {
 
     public void setCharge(String charge) {
         this.charge = charge;
+    }
+
+    public String getRideId() {
+        return rideId;
+    }
+
+    public void setRideId(String rideId) {
+        this.rideId = rideId;
     }
 }

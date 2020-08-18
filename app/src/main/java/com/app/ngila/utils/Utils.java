@@ -36,6 +36,10 @@ import androidx.annotation.NonNull;
 import androidx.core.content.PermissionChecker;
 
 import com.app.ngila.App;
+import com.app.ngila.R;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
@@ -59,6 +63,29 @@ import java.util.Random;
 
 
 public class Utils {
+
+
+    public static final int PricePerKm = 35;
+    public static double[] LatLonFromString(String location){
+      String[] locs=  location.split(":");
+      return new double[]{Double.parseDouble(locs[0]), Double.parseDouble(locs[1])};
+    }
+    public static LatLng LatLonOBjFromString(String location){
+        String[] locs=  location.split(":");
+        return new LatLng(Double.parseDouble(locs[0]), Double.parseDouble(locs[1]));
+    }
+
+    public static String LatLonOBjToString(LatLng location){
+        return location.latitude+":"+location.longitude;
+    }
+    public static   BitmapDescriptor CarIcon(Context context){
+        int height = 100;
+        int width = 100;
+        BitmapDrawable bitmapdraw = (BitmapDrawable)context.getResources().getDrawable(R.drawable.pickupcar);
+        Bitmap b = bitmapdraw.getBitmap();
+        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+        return BitmapDescriptorFactory.fromBitmap(smallMarker);
+    }
     /*
     public static void UploadImage(Context context, String name, File file){
 
@@ -229,6 +256,18 @@ public class Utils {
 
         SharedPreferences mySharedPreferences =context. getSharedPreferences(App.Prefs, Activity.MODE_PRIVATE);
         return mySharedPreferences.getString(App.Password,null);
+    }
+    public static String AdressName(Context context, double lat, double lon) throws IOException {
+        Geocoder geo = new Geocoder(context.getApplicationContext(), Locale.getDefault());
+        List<Address> addresses = geo.getFromLocation(lat, lon, 1);
+        if (addresses.isEmpty()) {
+        }
+        else {
+            if (addresses.size() > 0) {
+                return  addresses.get(0).getFeatureName() + ", " + addresses.get(0).getLocality() ;
+            }
+        }
+        return "Unknown Location";
     }
     public static String LocationName(Context context, double lat, double lon) throws IOException {
         Geocoder geo = new Geocoder(context.getApplicationContext(), Locale.getDefault());

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "252354485133",
+    "firebase_url": "https://ngila-7f87b.firebaseio.com",
+    "project_id": "ngila-7f87b",
+    "storage_bucket": "ngila-7f87b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252354485133:android:512bb865cc7b6358047bc4",
+        "android_client_info": {
+          "package_name": "com.app.ngila"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252354485133-s700vnaece099sc455dqntv5vgqf8bfh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtIHxkoaRcH-LIXmVPTeGmrF4nG4Pbrh8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252354485133-s700vnaece099sc455dqntv5vgqf8bfh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
