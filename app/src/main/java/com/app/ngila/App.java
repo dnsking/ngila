@@ -3,6 +3,8 @@ package com.app.ngila;
 import android.app.Application;
 import android.util.Log;
 
+import com.google.android.libraries.places.api.Places;
+
 import pl.tajchert.nammu.Nammu;
 
 public class App extends Application {
@@ -42,6 +44,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         Nammu.init(this);
+
+        Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
     }
 
     public class Urls{

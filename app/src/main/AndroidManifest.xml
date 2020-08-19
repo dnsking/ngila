@@ -47,6 +47,7 @@
             android:exported="false" />
 
         <activity android:name=".CarOwnerPlacementActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,7 +60,8 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".MapMainActivity" />
-        <activity android:name=".CarOwnerActivity" />
+        <activity android:name=".CarOwnerActivity" >
+        </activity>
         <activity android:name=".WelcomActivity" />
         <activity android:name=".JoinLoginActivity" />
         <activity android:name=".MainActivity" />

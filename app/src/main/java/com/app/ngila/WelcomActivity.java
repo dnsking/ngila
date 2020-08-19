@@ -30,8 +30,8 @@ public class WelcomActivity extends AppCompatActivity {
             }
             else if(Utils.GetAccountType(this).equals(App.AccountTypeDriver)){
 
-                Intent intent = new Intent(WelcomActivity.this, DriverActivity.class);
-                startActivity(intent);
+               // Intent intent = new Intent(WelcomActivity.this, DriverActivity.class);
+               // startActivity(intent);
             }
             else if(Utils.GetAccountType(this).equals(App.AccountTypePassenger)){
 

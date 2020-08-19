@@ -37,6 +37,7 @@ import androidx.core.content.PermissionChecker;
 
 import com.app.ngila.App;
 import com.app.ngila.R;
+import com.app.ngila.data.NgilaUser;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -217,6 +218,9 @@ public class Utils {
 
         SharedPreferences mySharedPreferences =context. getSharedPreferences(App.Prefs, Activity.MODE_PRIVATE);
         return mySharedPreferences.getString(id,null);
+    }
+    public static NgilaUser GetNgilaUser(Context context){
+        return new Gson().fromJson(GetString(App.UserData,  context),NgilaUser.class);
     }
 
 

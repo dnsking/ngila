@@ -15,6 +15,8 @@ import androidx.core.app.NotificationCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -38,6 +40,7 @@ public class NgilaNotificationService extends FirebaseMessagingService {
 
 
         String json =remoteMessage.getData().get("default");
+        /*
         if(json.contains("from")&&json.contains("messageId")&&json.contains("messageId")){
 
             AlbatalMessage msg = new Gson().fromJson(json, AlbatalMessage.class);
@@ -107,7 +110,7 @@ public class NgilaNotificationService extends FirebaseMessagingService {
 
 
 
-        }
+        }*/
       /*  if (remoteMessage.getData().size() > 0) {
             String data =remoteMessage.getData().get("default");
 
