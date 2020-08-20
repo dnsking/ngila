@@ -10,6 +10,8 @@ public class NgilaUser {
     private String password;
     private String numberPlate;
     private String driversLicense;
+    private String deviceId;
+
 
     public String getFirstName() {
         return firstName;
@@ -81,5 +83,13 @@ public class NgilaUser {
 
     public void setDriversLicense(String driversLicense) {
         this.driversLicense = driversLicense;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

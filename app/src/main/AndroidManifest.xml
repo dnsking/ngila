@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:usesCleartextTraffic="true"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.app.ngila">
 
@@ -19,6 +21,7 @@
         android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:node="replace" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:name=".App"
@@ -28,7 +31,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".DriverCodeActivity"></activity>
+        <activity android:name=".DriverActivity" />
 
         <service
             android:name=".NgilaNotificationService"
@@ -38,7 +42,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".NewPassengerBookingMainActivity"></activity>
+
+        <activity android:name=".NewPassengerBookingMainActivity" />
         <activity android:name=".PassengerActivity" />
 
         <service
@@ -47,12 +52,6 @@
             android:exported="false" />
 
         <activity android:name=".CarOwnerPlacementActivity">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
@@ -60,9 +59,15 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".MapMainActivity" />
-        <activity android:name=".CarOwnerActivity" >
+        <activity android:name=".CarOwnerActivity" />
+        <activity android:name=".WelcomActivity" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".WelcomActivity" />
         <activity android:name=".JoinLoginActivity" />
         <activity android:name=".MainActivity" />
     </application>

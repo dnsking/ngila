@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.app.ngila.JoinLoginActivity;
 import com.app.ngila.R;
 import com.app.ngila.data.NgilaUser;
 import com.app.ngila.utils.Utils;
@@ -27,6 +28,7 @@ public class OtpFragment extends Fragment implements Step {
     private TextView fourDigitCodeTxtView,resendCodeIn;
     private OtpView otp_view;
     private ExtendedFloatingActionButton resend;
+    private View loadingView;
 
     public void setNgilaUser(NgilaUser ngilaUser) {
         this.ngilaUser = ngilaUser;
@@ -50,6 +52,9 @@ public class OtpFragment extends Fragment implements Step {
             @Override
             public void onOtpCompleted(String otp) {
 
+                loadingView.setVisibility(View.VISIBLE);
+                otp_view.setEnabled(false);
+                ((JoinLoginActivity) getActivity()). match( otp);
             }
         });
 
@@ -97,7 +102,7 @@ public class OtpFragment extends Fragment implements Step {
         fourDigitCodeTxtView = view.findViewById(R.id.fourDigitCodeTxtView);
         otp_view = view.findViewById(R.id.otp_view);
         resend = view.findViewById(R.id.resend);
-
+        loadingView = view.findViewById(R.id.loadingView);
         resendCodeIn = view.findViewById(R.id.resendCodeIn);
         return view;
     }

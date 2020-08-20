@@ -43,6 +43,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 
 import org.apache.commons.io.FileUtils;
@@ -149,39 +151,6 @@ public class Utils {
         catch (Exception e) { }
         return null;
     }
-    public static void SendDeviceToServer(final Context context){
-
-        /*
-
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-
-                        final String token = task.getResult().getToken();
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try{
-
-                                    App.Log("SendDeviceToServer ");
-                                   String result = AlbatalContentHelper.AddContentNonLogin(new AddUserLocationNetworkAction(
-                                            Utils.GetUserName(context),
-                                            token
-                                    ));
-
-                                    App.Log("SendDeviceToServer "+result);
-                                    AlbatalContentHelper.AddContentNonLogin(new AddPhoneDeviceIdNetworkAction(Utils.GetUserName(context),token));
-                                }
-                                catch (Exception ex){}
-                            }
-                        }).start();
-
-
-                    }
-                });*/
-    }
     public static Drawable CircleFromColor(int color){
 
         ShapeDrawable shape = new ShapeDrawable(new OvalShape());
@@ -204,7 +173,44 @@ public class Utils {
         SharedPreferences mySharedPreferences =context. getSharedPreferences(App.Prefs, Activity.MODE_PRIVATE);
         return mySharedPreferences.getString(App.User,null);
     }
+    public static double RoundOff(double a){
+        return  Math.round(a * 100.0) / 100.0;
+    }
+    public static void SendDeviceToServer(final Context context){
 
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
+                        final String token = task.getResult().getToken();
+
+                        App.Log("Device Id "+token);
+
+                        /*
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try{
+
+                                    App.Log("SendDeviceToServer ");
+                                    String result = AlbatalContentHelper.AddContentNonLogin(new AddUserLocationNetworkAction(
+                                            Utils.GetUserName(context),
+                                            token
+                                    ));
+
+                                    App.Log("SendDeviceToServer "+result);
+                                    AlbatalContentHelper.AddContentNonLogin(new AddPhoneDeviceIdNetworkAction(Utils.GetUserName(context),token));
+                                }
+                                catch (Exception ex){}
+                            }
+                        }).start();*/
+
+
+                    }
+                });
+    }
     public static void SaveString(String id, Context context, String value){
 
         SharedPreferences mySharedPreferences =context. getSharedPreferences(App.Prefs, Activity.MODE_PRIVATE);

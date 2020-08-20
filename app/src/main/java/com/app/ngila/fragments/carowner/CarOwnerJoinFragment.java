@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.app.ngila.R;
 import com.app.ngila.data.NgilaUser;
 import com.app.ngila.fragments.onboarding.BaseNewAccountFragment;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
@@ -25,7 +26,7 @@ public class CarOwnerJoinFragment extends BaseNewAccountFragment implements Step
             phoneNumberTextInputEditText,
             passwordTextInputEditText
                     ,repeatpasswordTextInputEditText,
-            carBrandAndModelTextInputEditTextHolder,
+            carBrandAndModelTextInputEditText,
             numberPlateTextInputEditText;
     public CarOwnerJoinFragment() {
         // Required empty public constructor
@@ -38,7 +39,7 @@ public class CarOwnerJoinFragment extends BaseNewAccountFragment implements Step
         ngilaUser.setLastName(lastNameTextInputEditText.getText().toString());
         ngilaUser.setPhoneNumber(phoneNumberTextInputEditText.getText().toString());
         ngilaUser.setPassword(passwordTextInputEditText.getText().toString());
-        ngilaUser.setCarModel(carBrandAndModelTextInputEditTextHolder.getText().toString());
+        ngilaUser.setCarModel(carBrandAndModelTextInputEditText.getText().toString());
         ngilaUser.setNumberPlate(numberPlateTextInputEditText.getText().toString());
         return ngilaUser;
     }
@@ -62,7 +63,7 @@ public class CarOwnerJoinFragment extends BaseNewAccountFragment implements Step
         phoneNumberTextInputEditText = view.findViewById(R.id.phoneNumberTextInputEditText);
         passwordTextInputEditText = view.findViewById(R.id.passwordTextInputEditText);
         repeatpasswordTextInputEditText = view.findViewById(R.id.repeatpasswordTextInputEditText);
-        carBrandAndModelTextInputEditTextHolder = view.findViewById(R.id.carBrandAndModelTextInputEditTextHolder);
+        carBrandAndModelTextInputEditText = view.findViewById(R.id.carBrandAndModelTextInputEditText);
         numberPlateTextInputEditText = view.findViewById(R.id.numberPlateTextInputEditText);
         return view;
     }
@@ -92,13 +93,14 @@ public class CarOwnerJoinFragment extends BaseNewAccountFragment implements Step
             return new VerificationError("Enter Password");
         }
 
-        else if(!passwordTextInputEditText.getText().equals(repeatpasswordTextInputEditText.getText())){
+        else if(!passwordTextInputEditText.getText()
+                .toString().equals(repeatpasswordTextInputEditText.getText().toString())){
 
             return new VerificationError("Repeat Password Does Not Match");
         }
 
-        else if(carBrandAndModelTextInputEditTextHolder.getText()==null
-                ||carBrandAndModelTextInputEditTextHolder.getText().toString().length()<1){
+        else if(carBrandAndModelTextInputEditText.getText()==null
+                ||carBrandAndModelTextInputEditText.getText().toString().length()<1){
 
             return new VerificationError("Enter Car Brand");
         }
@@ -119,5 +121,6 @@ public class CarOwnerJoinFragment extends BaseNewAccountFragment implements Step
     @Override
     public void onError(@NonNull VerificationError error) {
 
+        Snackbar.make(numberPlateTextInputEditText,error.getErrorMessage(),Snackbar.LENGTH_SHORT).show();
     }
 }

@@ -17,6 +17,14 @@ public class App extends Application {
     public static  final String UserData = "UserData";
     public static  final String UserDetails = "UserDetails";
     public static  final String AccountType = "AccountType";
+    public static  final String Status = "Status";
+
+    public static  final String BookedDriver = "BookedDriver";
+    public static  final String CarOwner = "CarOwner";
+    public static  final String Passenger = "Passenger";
+
+    public static  final String Status_CarBooked = "Status_CarBooked";
+    public static  final String Status_Passenger = "Status_Passenger";
 
 
     public static  final String AccountTypeCarOwner = "AccountTypeCarOwner";

@@ -9,6 +9,7 @@ public class AvailableCars {
     private String pickUpTime;
     private String returnTime;
     private String operatingArea;
+    private String locationName;
 
     public String getCity() {
         return city;
@@ -72,5 +73,13 @@ public class AvailableCars {
 
     public void setOperatingArea(String operatingArea) {
         this.operatingArea = operatingArea;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 }

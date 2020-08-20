@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     tools:context=".fragments.driver.DriverJoinFragment">
 
     <ScrollView
@@ -44,6 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
+                    android:background="#fff"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -61,6 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="phone"
+                    android:background="#fff"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -77,6 +81,7 @@
                     android:id="@+id/passwordTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#fff"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -93,6 +98,8 @@
                 android:id="@+id/repeatpasswordTextInputEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:background="#fff"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -109,6 +116,7 @@
                     android:id="@+id/licenseTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#fff"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>

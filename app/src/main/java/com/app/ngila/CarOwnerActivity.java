@@ -27,9 +27,12 @@ public class CarOwnerActivity extends AppCompatActivity {
     private RecyclerView timeline;
     private FrameLayout asker;
     private final int requestCode =100;
+    private String bookedDriver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bookedDriver = Utils.GetString(App.BookedDriver,this);
+        ngilaUser = Utils.GetNgilaUser(this);
         setContentView(R.layout.activity_car_owner);
         timeline = findViewById(R.id.timeline);
         asker = findViewById(R.id.asker);
@@ -48,7 +51,11 @@ public class CarOwnerActivity extends AppCompatActivity {
     }
     private void showTimeLine(){}
     public void init(){
-        new Thread(new Runnable() {
+        if(bookedDriver==null){
+            showNewBooking();
+        }
+        else{}
+     /*   new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -85,6 +92,6 @@ public class CarOwnerActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        }).start();*/
     }
 }

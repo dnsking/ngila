@@ -20,7 +20,7 @@ public class NetworkContentHelper {
     public static  Response ApiGatewayCaller(NetworkAction flexcineNetworkAction) throws IOException {
         String json = new Gson().toJson(flexcineNetworkAction);
 
-        //  App.Log("test RequestS3Url "+json);
+         App.Log("ApiGatewayCaller "+json);
         OkHttpClient client =  new OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
         Request request = new Request.Builder()
                 // .addHeader("Authorization",token)
@@ -39,7 +39,7 @@ public class NetworkContentHelper {
         Gson gson = new Gson();
         String json = gson.toJson( userNetworkAction);
 
-        //  App.Log("test RequestS3Url "+json);
+         App.Log("AddContent "+json);
         OkHttpClient client =  new OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
         Request request = new Request.Builder()
                // .addHeader("Authorization",authentication.getIdToken())

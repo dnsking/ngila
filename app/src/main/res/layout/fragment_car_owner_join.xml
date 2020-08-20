@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.carowner.CarOwnerJoinFragment">
 
@@ -44,6 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
+                    android:background="#fff"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -61,6 +64,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="phone"
+
+                    android:background="#fff"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -77,6 +82,8 @@
                     android:id="@+id/passwordTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:background="#fff"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -93,6 +100,8 @@
                     android:id="@+id/repeatpasswordTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#fff"
+                    android:inputType="textPassword"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -109,6 +118,7 @@
                     android:id="@+id/carBrandAndModelTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#fff"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -118,13 +128,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:startIconDrawable="@drawable/ic_baseline_accessible_24"
-                android:hint="Insurance Type"
+                android:hint="License Plate"
                 android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/numberPlateTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#fff"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>

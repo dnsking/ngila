@@ -89,7 +89,7 @@ public class DriverJoinFragment extends BaseNewAccountFragment implements Step {
             return new VerificationError("Enter Password");
         }
 
-        else if(!passwordTextInputEditText.getText().equals(repeatpasswordTextInputEditText.getText())){
+        else if(!passwordTextInputEditText.getText().toString().equals(repeatpasswordTextInputEditText.getText().toString())){
 
             return new VerificationError("Repeat Password Does Not Match");
         }

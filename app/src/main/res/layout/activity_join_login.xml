@@ -11,9 +11,8 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
         android:id="@+id/toolbar"
-        app:title="Ngila 9 to 5"
+        app:title="Join"
         >
 
     </com.google.android.material.appbar.MaterialToolbar>

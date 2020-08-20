@@ -21,6 +21,10 @@ import com.app.ngila.network.NetworkContentHelper;
 import com.app.ngila.network.actions.MatchCodeNetworkAction;
 import com.app.ngila.network.actions.SignInNetworkAction;
 import com.app.ngila.utils.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
@@ -43,6 +47,7 @@ public class JoinLoginActivity extends AppCompatActivity {
         accType = getIntent().getStringExtra(App.Content);
         setContentView(R.layout.activity_join_login);
 
+        mStepperLayout=findViewById(R.id.stepperLayout);
 
         mStepperLayout.setListener(new StepperLayout.StepperListener() {
             @Override
@@ -94,37 +99,52 @@ public class JoinLoginActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
 
 
-                    MatchCodeNetworkAction matchCodeNetworkAction=  new MatchCodeNetworkAction(ngilaUser.getPhoneNumber(),opt,ngilaUser);
-                    Response response = NetworkContentHelper.ApiGatewayCaller(matchCodeNetworkAction);
 
-                    String result = response.body().string();
-                    App. Log("MatchKey "+result);
+                    FirebaseInstanceId.getInstance().getInstanceId()
+                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    try {
+                                    final String token = task.getResult().getToken();
 
-                        Authentication authenticationResult = new Gson().fromJson(result,Authentication.class);
+                                    App.Log("Device Id "+token);
 
-                    Utils.SaveAccountType(JoinLoginActivity.this,accType);
-                    Utils.SaveUserName(JoinLoginActivity.this,ngilaUser.getPhoneNumber());
-                    Utils.SaveString(App.UserData,JoinLoginActivity.this,new Gson().toJson(ngilaUser));
+                                    ngilaUser.setDeviceId(token);
+                                    MatchCodeNetworkAction matchCodeNetworkAction=  new MatchCodeNetworkAction(ngilaUser.getPhoneNumber(),opt,ngilaUser);
+                                    Response response = NetworkContentHelper.ApiGatewayCaller(matchCodeNetworkAction);
 
-                    if(accType.equals(App.AccountTypeCarOwner)){
-                        Intent intent = new Intent(JoinLoginActivity.this,CarOwnerActivity.class);
-                        startActivity(intent);
-                    }
-                    else if(accType.equals(App.AccountTypeDriver)){
-                        Intent intent = new Intent(JoinLoginActivity.this, PassengerActivity.class);
-                        startActivity(intent);
-                    }
-                    else if(accType.equals(App.AccountTypePassenger)){
-                        Intent intent = new Intent(JoinLoginActivity.this,PassengerActivity.class);
-                        startActivity(intent);
-                    }
-                    finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                                    String result = response.body().string();
+                                    App. Log("MatchKey "+result);
+
+                                    Authentication authenticationResult = new Gson().fromJson(result,Authentication.class);
+
+                                    Utils.SaveAccountType(JoinLoginActivity.this,accType);
+                                    Utils.SaveUserName(JoinLoginActivity.this,ngilaUser.getPhoneNumber());
+                                    Utils.SaveString(App.UserData,JoinLoginActivity.this,new Gson().toJson(ngilaUser));
+
+                                    if(accType.equals(App.AccountTypeCarOwner)){
+                                        Intent intent = new Intent(JoinLoginActivity.this,CarOwnerActivity.class);
+                                        startActivity(intent);
+                                    }
+                                    else if(accType.equals(App.AccountTypeDriver)){
+                                        Intent intent = new Intent(JoinLoginActivity.this, DriverActivity.class);
+                                        startActivity(intent);
+                                    }
+                                    else if(accType.equals(App.AccountTypePassenger)){
+                                        Intent intent = new Intent(JoinLoginActivity.this,PassengerActivity.class);
+                                        startActivity(intent);
+                                    }
+                                    finish();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                }
+                            });
+
+
             }
         }).start();
     }

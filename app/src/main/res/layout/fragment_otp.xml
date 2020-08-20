@@ -41,6 +41,19 @@
             app:viewType="rectangle"
             android:layout_gravity="center"
             />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loadingView"
+            android:visibility="gone"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            app:lottie_rawRes="@raw/loading"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+
+            />
     </LinearLayout>
 
     <LinearLayout
