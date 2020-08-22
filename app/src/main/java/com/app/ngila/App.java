@@ -3,6 +3,7 @@ package com.app.ngila;
 import android.app.Application;
 import android.util.Log;
 
+import com.app.ngila.network.actions.AcceptedDriver;
 import com.google.android.libraries.places.api.Places;
 
 import pl.tajchert.nammu.Nammu;
@@ -20,16 +21,29 @@ public class App extends Application {
     public static  final String Status = "Status";
 
     public static  final String BookedDriver = "BookedDriver";
+    public static  final String BookedDriverWaiting = "BookedDriverWaiting";
+    public static  final String BookedDriverAccepted = "BookedDriverAccepted";
+    public static  final String BookedDriverAcceptedData = "BookedDriverAcceptedData";
+    public static  final String BookedDriverAcceptedHiredData = "BookedDriverAcceptedHiredData";
+    public static  final String BookedDriverAcceptedHired = "BookedDriverAcceptedHired";
     public static  final String CarOwner = "CarOwner";
     public static  final String Passenger = "Passenger";
 
     public static  final String Status_CarBooked = "Status_CarBooked";
     public static  final String Status_Passenger = "Status_Passenger";
 
+    public static  final String DriverContractStarted = "Contract Started";
+
 
     public static  final String AccountTypeCarOwner = "AccountTypeCarOwner";
     public static  final String AccountTypeDriver = "AccountTypeDriver";
     public static  final String AccountTypePassenger = "AccountTypePassenger";
+
+
+    public static  final String AcceptedDriverBroadcast = "AcceptedDriverBroadcast";
+    public static  final String DriverCarOwnerContractBroadcast = "DriverCarOwnerContractBroadcast";
+
+
 
     public static boolean IsDebug = true;
     private static final String TAG = "Ngila Client";

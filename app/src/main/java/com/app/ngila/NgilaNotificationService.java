@@ -12,6 +12,9 @@ import android.graphics.BitmapFactory;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.app.ngila.network.actions.AcceptedDriver;
+import com.app.ngila.network.actions.DriverCarOwnerContract;
+import com.app.ngila.network.actions.NetworkAction;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -40,6 +43,21 @@ public class NgilaNotificationService extends FirebaseMessagingService {
 
 
         String json =remoteMessage.getData().get("default");
+    //    NetworkAction networkAction =  new Gson().fromJson(json, NetworkAction.class);
+        assert json != null;
+        if(json.contains("carOwnerLocation")){
+
+            Intent intent = new Intent(App.AcceptedDriverBroadcast);
+            intent.putExtra(App.Content,json);
+            sendBroadcast(intent);
+        }
+
+        else if(json.contains("driverActivity")){
+
+            Intent intent = new Intent(App.DriverCarOwnerContractBroadcast);
+            intent.putExtra(App.Content,json);
+            sendBroadcast(intent);
+        }
         /*
         if(json.contains("from")&&json.contains("messageId")&&json.contains("messageId")){
 

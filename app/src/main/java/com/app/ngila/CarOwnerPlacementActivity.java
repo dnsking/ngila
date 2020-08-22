@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -67,7 +68,7 @@ public class CarOwnerPlacementActivity extends AppCompatActivity {
                 materialTimePicker.setListener(new MaterialTimePicker.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(MaterialTimePicker dialog) {
-                        pickupTime=  dialog.getHour()+":"+dialog.getMinute();
+                        pickupTime=  dialog.getHour()+":"+(dialog.getMinute()==0?"00":dialog.getMinute());
                         startTime.setText(pickupTime);
 
                     }
@@ -89,7 +90,7 @@ public class CarOwnerPlacementActivity extends AppCompatActivity {
                 materialTimePicker.setListener(new MaterialTimePicker.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(MaterialTimePicker dialog) {
-                        returnTime=  dialog.getHour()+":"+dialog.getMinute();
+                        returnTime=  dialog.getHour()+":"+(dialog.getMinute()==0?"00":dialog.getMinute());
                         endTime.setText(returnTime);
 
                     }
@@ -126,6 +127,11 @@ public class CarOwnerPlacementActivity extends AppCompatActivity {
                         @Override
                         public void permissionRefused() {
 
+                            startTime.setEnabled(true);
+                            endTime.setEnabled(true);
+                            placeBtn.setEnabled(true);
+                            operatingAreaTextInputEditTextHolder.setEnabled(true);
+                            loadingView.setVisibility(View.GONE);
                             Snackbar.make(placeBtn,"Location Permission Required®",Snackbar.LENGTH_SHORT).show();
                         }
                     });
@@ -138,7 +144,7 @@ public class CarOwnerPlacementActivity extends AppCompatActivity {
         }
     }
     private void addAvailableCar(){
-        SingleShotLocationProvider.requestSingleUpdate(this,
+        SingleShotLocationProvider.requestSingleUpdate(CarOwnerPlacementActivity.this,
                 new SingleShotLocationProvider.LocationCallback() {
                     @Override
                     public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
@@ -176,7 +182,9 @@ public class CarOwnerPlacementActivity extends AppCompatActivity {
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                setResult(100,new Intent());
+                                                Intent intent =    new Intent();
+                                                intent.putExtra(App.Content,new Gson().toJson(availableCarsNetworkAction));
+                                                setResult(100,intent);
                                                finish();
                                             }
                                         });
@@ -185,6 +193,7 @@ public class CarOwnerPlacementActivity extends AppCompatActivity {
                                     }
                                 }
                             }).start();
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

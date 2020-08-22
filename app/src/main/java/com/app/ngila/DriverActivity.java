@@ -1,11 +1,14 @@
 package com.app.ngila;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +25,11 @@ import com.app.ngila.locationhandler.SingleShotLocationProvider;
 import com.app.ngila.network.NetworkContentHelper;
 import com.app.ngila.network.actions.SignInNetworkAction;
 import com.app.ngila.utils.Utils;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -41,7 +49,10 @@ import pl.tajchert.nammu.PermissionCallback;
 import static android.Manifest.permission.ACCESS_BACKGROUND_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class DriverActivity extends AppCompatActivity {
+public class DriverActivity extends AppCompatActivity implements
+        GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnMyLocationClickListener,
+        OnMapReadyCallback {
 
     private NgilaUser ngilaUser;
     private String status;
@@ -49,14 +60,20 @@ public class DriverActivity extends AppCompatActivity {
     private ArrayList<AvailableCars> availableCarsList;
     private RecyclerView availableCarsRecyclerView;
     private final int requestCode=100;
+    private SupportMapFragment mapFragment ;
+    private GoogleMap mMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ngilaUser = Utils.GetNgilaUser(this);
         status = Utils.GetString(App.Status,this);
         setContentView(R.layout.activity_driver2);
+
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+
         availableCarsRecyclerView = findViewById(R.id.availableCarsRecyclerView);
-        if(status==null){
+        //if(status==null)
 
             Nammu.askForPermission(this, Build.VERSION.SDK_INT>28? new String[]{ACCESS_BACKGROUND_LOCATION,
                             ACCESS_FINE_LOCATION}:new String[]{
@@ -65,6 +82,7 @@ public class DriverActivity extends AppCompatActivity {
                         @Override
                         public void permissionGranted() {
 
+                            mapFragment.getMapAsync(DriverActivity.this);
                             showAvailableCars();
                         }
 
@@ -74,11 +92,52 @@ public class DriverActivity extends AppCompatActivity {
                          //   Snackbar.make(placeBtn,"Location Permission Required®",Snackbar.LENGTH_SHORT).show();
                         }
                     });
-        }
+
 
     }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        return false;
+    }
+
+    @Override
+    public void onMyLocationClick(@NonNull Location location) {
+
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
+
+
+        SingleShotLocationProvider.requestSingleUpdate(this, new SingleShotLocationProvider.LocationCallback() {
+            @Override
+            public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
+
+
+               // mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.latitude, location.longitude), 24));
+
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(location.latitude, location.longitude))      // Sets the center of the map to location user
+                        .zoom(30)                   // Sets the zoom
+                        .bearing(30)                // Sets the orientation of the camera to east
+                        .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                        .build();                   // Creates a CameraPosition from the builder
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        });
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Nammu.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
     private void showAvailableCars(){
-        Utils.SendDeviceToServer(this);
+        //Utils.SendDeviceToServer(this);
 
         availableCarsList = new ArrayList<>();
         SingleShotLocationProvider.requestSingleUpdate(DriverActivity.this,
@@ -103,12 +162,21 @@ public class DriverActivity extends AppCompatActivity {
 
                                       availableCarsList = new ArrayList<>();
                                       AvailableCars[] availableCarsArray = new Gson().fromJson(result,AvailableCars[].class);
-                                      for(AvailableCars availableCars : availableCarsArray)
-                                          availableCarsList.add(availableCars);
+
 
                                       runOnUiThread(new Runnable() {
                                           @Override
                                           public void run() {
+                                              for(AvailableCars availableCars : availableCarsArray){
+
+                                                  availableCarsList.add(availableCars);
+                                                  mMap.addMarker(new MarkerOptions().position(
+                                                         Utils.LatLonOBjFromString(availableCars.getLocation())
+                                                  )
+                                                          .title(availableCars.getCarModel()).icon(Utils.CarIconSmall(
+                                                                  DriverActivity.this
+                                                          )));
+                                              }
                                               initAvailableCarList();
                                           }
                                       });}
@@ -123,7 +191,7 @@ public class DriverActivity extends AppCompatActivity {
                 });
     }
     private void initAvailableCarList(){
-        LinearLayoutManager listManager = new LinearLayoutManager(this, GridLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager listManager = new LinearLayoutManager(this, GridLayoutManager.VERTICAL, false);
 
         availableCarsRecyclerView.setLayoutManager(listManager);
 

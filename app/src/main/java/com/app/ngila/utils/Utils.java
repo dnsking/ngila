@@ -89,6 +89,15 @@ public class Utils {
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
         return BitmapDescriptorFactory.fromBitmap(smallMarker);
     }
+
+    public static   BitmapDescriptor CarIconSmall(Context context){
+        int height = 100;
+        int width = 100;
+        BitmapDrawable bitmapdraw = (BitmapDrawable)context.getResources().getDrawable(R.drawable.ic_car);
+        Bitmap b = bitmapdraw.getBitmap();
+        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+        return BitmapDescriptorFactory.fromBitmap(smallMarker);
+    }
     /*
     public static void UploadImage(Context context, String name, File file){
 

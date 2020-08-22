@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import com.app.ngila.data.DriverTravel;
 import com.app.ngila.data.NgilaUser;
 import com.app.ngila.locationhandler.SingleShotLocationProvider;
 import com.app.ngila.network.NetworkContentHelper;
+import com.app.ngila.network.actions.AddPassengerPickUp;
 import com.app.ngila.network.actions.SignInNetworkAction;
 import com.app.ngila.utils.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,6 +34,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.Response;
+import pl.tajchert.nammu.Nammu;
+import pl.tajchert.nammu.PermissionCallback;
+
+import static android.Manifest.permission.ACCESS_BACKGROUND_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class PassengerActivity extends AppCompatActivity implements
         GoogleMap.OnMyLocationButtonClickListener,
@@ -51,31 +59,62 @@ public class PassengerActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ngilaUser = Utils.GetNgilaUser(this);
         setContentView(R.layout.activity_driver);
         locationTextView = findViewById(R.id.locationTextView);
 
-        findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(PassengerActivity.this,NewPassengerBookingMainActivity.class);
-                intent.putExtra(App.Content,Utils.LatLonOBjToString(currentLocation));
-                startActivityForResult(intent,requestCode);
-
-            }
-        });
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-        mapFragment.getMapAsync(this);
-        init();
+
+        Nammu.askForPermission(this, Build.VERSION.SDK_INT>28? new String[]{ACCESS_BACKGROUND_LOCATION,
+                        ACCESS_FINE_LOCATION}:new String[]{
+                        ACCESS_FINE_LOCATION}
+                , new PermissionCallback() {
+                    @Override
+                    public void permissionGranted() {
+
+                        findViewById(R.id.actionButton).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                Intent intent = new Intent(PassengerActivity.this,NewPassengerBookingMainActivity.class);
+                                intent.putExtra(App.Content,Utils.LatLonOBjToString(currentLocation));
+                                startActivityForResult(intent,requestCode);
+
+                            }
+                        });
+                        mapFragment.getMapAsync(PassengerActivity.this);
+                        init();
+                    }
+
+                    @Override
+                    public void permissionRefused() {
+
+                        //   Snackbar.make(placeBtn,"Location Permission Required®",Snackbar.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         destinationLocation = Utils.LatLonOBjFromString(data.getStringExtra(App.Content));
-     //   NgilaPassengerPickUps
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                AddPassengerPickUp addPassengerPickUp = new AddPassengerPickUp(city,
+                        Utils.LatLonOBjToString(currentLocation),data.getStringExtra(App.Content),
+                        ngilaUser.getPhoneNumber());
+                try {
+                    NetworkContentHelper.AddContent(PassengerActivity.this,addPassengerPickUp);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
     }
 
     private void loadCars(){
@@ -131,20 +170,20 @@ public class PassengerActivity extends AppCompatActivity implements
         }.start();
     }
     public void init(){
+        SingleShotLocationProvider.requestSingleUpdate(PassengerActivity.this,
+                new SingleShotLocationProvider.LocationCallback() {
+                    @Override
+                    public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                SingleShotLocationProvider.requestSingleUpdate(PassengerActivity.this,
-                        new SingleShotLocationProvider.LocationCallback() {
-                            @Override
-                            public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
+
                                 try {
                                     city = Utils.LocationCity(PassengerActivity.this,location.latitude,location.longitude);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                            }
-                        });
+
                 try {
 
                     SignInNetworkAction getPassengerBookedNetworkAction=  new SignInNetworkAction(ngilaUser.getPhoneNumber()
@@ -155,21 +194,29 @@ public class PassengerActivity extends AppCompatActivity implements
 
                     String result = response.body().string();
                     App. Log("DriverTravel "+result);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                    DriverTravel driverTravel = new Gson().fromJson(result,DriverTravel.class);
-                    if(driverTravel.getRideId()==null){
-                        loadCars();
+                            DriverTravel driverTravel = new Gson().fromJson(result,DriverTravel.class);
+                            if(driverTravel.getRideId()==null){
+                                loadCars();
 
-                    }
-                    else{
+                            }
+                            else{
 
-                    }
+                            }
+                        }
+                    });
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).start();
+                    }
+                });
     }
 
     @Override
@@ -182,10 +229,12 @@ public class PassengerActivity extends AppCompatActivity implements
 
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
         {

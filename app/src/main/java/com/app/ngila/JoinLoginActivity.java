@@ -7,8 +7,10 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 
 import com.app.ngila.data.Authentication;
 import com.app.ngila.data.NgilaUser;
@@ -44,6 +46,10 @@ public class JoinLoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setStatusBarColor(Color.BLACK);
+        getWindow().setNavigationBarColor(Color.BLACK);
+
         accType = getIntent().getStringExtra(App.Content);
         setContentView(R.layout.activity_join_login);
 
@@ -96,16 +102,17 @@ public class JoinLoginActivity extends AppCompatActivity {
     }
 
     public void match(String opt){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
         new Thread(new Runnable() {
             @Override
             public void run() {
 
 
 
-                    FirebaseInstanceId.getInstance().getInstanceId()
-                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
                                     try {
                                     final String token = task.getResult().getToken();
 
@@ -141,12 +148,13 @@ public class JoinLoginActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                }
-                            });
-
 
             }
         }).start();
+
+
+                    }
+                });
     }
     public  class StepperAdapter extends AbstractFragmentStepAdapter {
 

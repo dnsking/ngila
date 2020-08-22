@@ -128,10 +128,10 @@ public class NewPassengerBookingMainActivity extends AppCompatActivity  implemen
         try {
             timeLineItemPickup = new TimelineViewHelper.TimeLineItem(Utils.AdressName(this,
                     mOrigin.latitude,mOrigin.longitude),"Pick Up",0);
-            timeLineItemPickup = new TimelineViewHelper.TimeLineItem("","Select Destination",0);
+            timeLineItemDestination = new TimelineViewHelper.TimeLineItem("","Select Destination",0);
 
             TimelineViewHelper.InitList(timeline,new TimelineViewHelper.TimeLineItem[]{
-                    timeLineItemPickup,timeLineItemPickup
+                    timeLineItemPickup,timeLineItemDestination
             });
 
         } catch (IOException e) {
@@ -161,7 +161,11 @@ public class NewPassengerBookingMainActivity extends AppCompatActivity  implemen
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
         // Show marker on the screen and adjust the zoom level
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mOrigin,8f));
+
+        marker=  mMap.addMarker(new MarkerOptions().position(mOrigin)
+                .title("Pick Up"));
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mOrigin, 13));
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
         {
@@ -338,9 +342,12 @@ public class NewPassengerBookingMainActivity extends AppCompatActivity  implemen
 
                 try{
 
-                    timeLineItemPickup = new TimelineViewHelper.TimeLineItem(Utils.AdressName(NewPassengerBookingMainActivity.this
+                    timeLineItemDestination = new TimelineViewHelper.TimeLineItem(Utils.AdressName(NewPassengerBookingMainActivity.this
                             ,mDestination.latitude,mDestination.longitude),distanceInKm+"km Price "+
                             Utils.PricePerKm*distanceInKm,0);
+                    TimelineViewHelper.InitList(timeline,new TimelineViewHelper.TimeLineItem[]{
+                            timeLineItemPickup,timeLineItemDestination
+                    });
                 }
                 catch (Exception ex){}
                 polylineOptions.addAll(points);

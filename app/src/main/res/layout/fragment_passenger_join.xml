@@ -8,7 +8,9 @@
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginEnd="16dp"
+    android:layout_marginStart="16dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/firstNameTextInputEditTextHolder"
@@ -76,6 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#fff"
+            android:inputType="textPassword"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -93,6 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#fff"
+            android:inputType="textPassword"
             />
 
     </com.google.android.material.textfield.TextInputLayout>

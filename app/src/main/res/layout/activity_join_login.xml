@@ -6,16 +6,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#3f51b5"
     tools:context=".JoinLoginActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
-        app:title="Join"
-        >
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="82dp"
+        android:text="Let's Get Started"
+        android:textSize="32sp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="#fff"/>
 
-    </com.google.android.material.appbar.MaterialToolbar>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Give Us Some Details About Yourself And Your Car"
+        android:textSize="24sp"
+        android:textColor="#fff"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginTop="16dp"/>
+
 
 
     <com.stepstone.stepper.StepperLayout
@@ -24,6 +37,7 @@
         android:id="@+id/stepperLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
         app:ms_stepperType="progress_bar"
         app:ms_backButtonColor="#fafafa"
         app:ms_nextButtonColor="#fafafa"

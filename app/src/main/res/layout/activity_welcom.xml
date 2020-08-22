@@ -4,23 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomActivity">
+    tools:context=".WelcomActivity"
+    android:background="#F2EDAC">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <com.google.android.material.appbar.MaterialToolbar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#fff"
-            android:id="@+id/toolbar"
-            >
-
-        </com.google.android.material.appbar.MaterialToolbar>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="82dp"
             android:text="Welcome to Ngila"
             android:textSize="32sp"
             android:fontFamily="sans-serif-medium"

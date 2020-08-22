@@ -86,7 +86,8 @@ public class PassengerJoinFragment extends BaseNewAccountFragment implements Ste
             return new VerificationError("Enter Password");
         }
 
-        else if(!passwordTextInputEditText.getText().equals(repeatpasswordTextInputEditText.getText())){
+        else if(!passwordTextInputEditText.getText().toString().equals(repeatpasswordTextInputEditText.getText()
+                .toString())){
 
             return new VerificationError("Repeat Password Does Not Match");
         }
