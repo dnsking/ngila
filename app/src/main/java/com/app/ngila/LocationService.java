@@ -2,7 +2,22 @@ package com.app.ngila;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+
+import com.app.ngila.data.AvailableCars;
+import com.app.ngila.locationhandler.SingleShotLocationProvider;
+import com.app.ngila.network.NetworkContentHelper;
+import com.app.ngila.network.actions.DriverCarOwnerContract;
+import com.app.ngila.network.actions.SignInNetworkAction;
+import com.app.ngila.utils.Utils;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+
+import okhttp3.Response;
 
 public class LocationService extends Service {
     public LocationService() {
@@ -21,6 +36,38 @@ public class LocationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+
+
+        Handler handler = new Handler();
+        int delay = 1000*45; //milliseconds
+
+        handler.postDelayed(new Runnable(){
+            public void run(){
+
+                String BookedDriverAcceptedHiredDataString = Utils.GetString(App.BookedDriverAcceptedHiredData,
+                        LocationService.this);
+
+                String PickingUpPassengerDataString = Utils.GetString(App.PickingUpPassenger,
+                        LocationService.this);
+
+
+                if(BookedDriverAcceptedHiredDataString!=null){
+                    DriverCarOwnerContract acceptedDriver = new Gson().fromJson(BookedDriverAcceptedHiredDataString, DriverCarOwnerContract.class);
+
+
+                    SingleShotLocationProvider.requestSingleUpdate(LocationService.this,
+                            new SingleShotLocationProvider.LocationCallback() {
+                                @Override
+                                public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
+
+                                }
+                            });
+                }
+                handler.postDelayed(this, delay);
+            }
+        }, delay);
+
         return START_STICKY;
     }
 

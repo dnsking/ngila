@@ -58,6 +58,12 @@ public class NgilaNotificationService extends FirebaseMessagingService {
             intent.putExtra(App.Content,json);
             sendBroadcast(intent);
         }
+        else if(json.contains("rideID")){
+
+            Intent intent = new Intent(App.Order);
+            intent.putExtra(App.Content,json);
+            sendBroadcast(intent);
+        }
         /*
         if(json.contains("from")&&json.contains("messageId")&&json.contains("messageId")){
 

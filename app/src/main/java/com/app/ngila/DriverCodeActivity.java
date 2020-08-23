@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -36,6 +38,7 @@ public class DriverCodeActivity extends AppCompatActivity {
 
     private NgilaUser ngilaUser;
     private ImageView qrImageView;
+    private LatLng location;
     private AvailableCars availableCars;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class DriverCodeActivity extends AppCompatActivity {
 
         availableCars = new Gson().fromJson(getIntent().getStringExtra(App.Content),AvailableCars.class);
 
+        location = Utils.LatLonOBjFromString(availableCars.getLocation());
         ngilaUser = Utils.GetNgilaUser(this);
         ngilaUser.setPassword(null);
         setContentView(R.layout.activity_driver_code);
@@ -64,6 +68,14 @@ public class DriverCodeActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
 
         qrImageView.setImageBitmap(qrgEncoder.getBitmap());
+        findViewById(R.id.directionsBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("geo:0,0?q="+location.latitude+","+location.longitude+" (" +"Driver Location"+ ")"));
+                startActivity(intent);
+            }
+        });
 
         SingleShotLocationProvider.requestSingleUpdate(DriverCodeActivity.this,
                 new SingleShotLocationProvider.LocationCallback() {
@@ -100,10 +112,14 @@ public class DriverCodeActivity extends AppCompatActivity {
     private class DriverCarOwnerContractReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             String json = intent.getStringExtra(App.Content);
             Utils.SaveString(App.BookedDriver,context,App.BookedDriverAcceptedHired);
             DriverCarOwnerContract acceptedDriver = new Gson().fromJson(json, DriverCarOwnerContract.class);
             Utils.SaveString(App.BookedDriverAcceptedHiredData,context,json);
+            Utils.SaveString(App.CarRequestData,context,null);
+            Intent intent2 = new Intent(DriverCodeActivity.this,DriverActivity.class);
+            startActivity(intent2);
 
         }
     }

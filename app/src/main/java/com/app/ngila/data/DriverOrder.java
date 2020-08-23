@@ -3,6 +3,9 @@ package com.app.ngila.data;
 public class DriverOrder {
     private String driverNumber;//primary key
     private String passengerNumber;
+    private String passengerLocation;
+    private String driverLocation;
+
     private String carOwnerNumber;
     private String destination;
     private String destinationName;
@@ -92,5 +95,21 @@ public class DriverOrder {
 
     public void setRideId(String rideId) {
         this.rideId = rideId;
+    }
+
+    public String getPassengerLocation() {
+        return passengerLocation;
+    }
+
+    public void setPassengerLocation(String passengerLocation) {
+        this.passengerLocation = passengerLocation;
+    }
+
+    public String getDriverLocation() {
+        return driverLocation;
+    }
+
+    public void setDriverLocation(String driverLocation) {
+        this.driverLocation = driverLocation;
     }
 }

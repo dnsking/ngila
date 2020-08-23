@@ -8,7 +8,16 @@
     android:gravity="center"
     tools:context=".DriverCodeActivity">
 
-
+    <Button
+        android:layout_marginTop="16dp"
+        android:id="@+id/cancel_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:layout_gravity="right"
+        android:layout_margin="16dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,6 +51,16 @@
         android:layout_height="wrap_content"
         android:text="Call Car Owner"
         app:icon="@drawable/ic_baseline_call_24"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        />
+
+    <Button
+        android:layout_marginTop="16dp"
+        android:id="@+id/directionsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Directions"
+        app:icon="@drawable/ic_baseline_directions_24"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
         />
 

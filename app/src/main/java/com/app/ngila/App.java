@@ -26,6 +26,13 @@ public class App extends Application {
     public static  final String BookedDriverAcceptedData = "BookedDriverAcceptedData";
     public static  final String BookedDriverAcceptedHiredData = "BookedDriverAcceptedHiredData";
     public static  final String BookedDriverAcceptedHired = "BookedDriverAcceptedHired";
+    public static  final String PickingUpPassenger = "PickingUpPassenger";
+
+
+    public static  final String Order = "Order";
+
+
+    public static  final String CarRequestData= "CarRequestData";
     public static  final String CarOwner = "CarOwner";
     public static  final String Passenger = "Passenger";
 

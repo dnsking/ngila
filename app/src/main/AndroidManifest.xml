@@ -30,7 +30,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CarOwnerScanActivity"></activity>
+        <activity android:name=".WaitingForPassengerActivity"></activity>
+        <activity android:name=".CarOwnerScanActivity" />
         <activity android:name=".DriverCodeActivity" />
         <activity android:name=".DriverActivity" />
 
@@ -51,7 +52,7 @@
             android:enabled="false"
             android:exported="false" />
 
-        <activity android:name=".CarOwnerPlacementActivity"></activity>
+        <activity android:name=".CarOwnerPlacementActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

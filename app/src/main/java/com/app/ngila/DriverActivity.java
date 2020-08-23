@@ -94,6 +94,22 @@ public class DriverActivity extends AppCompatActivity implements
                     });
 
 
+        String availableCars = Utils.GetString(App.CarRequestData,this);
+        String BookedDriverAcceptedHiredDataString = Utils.GetString(App.BookedDriverAcceptedHiredData,this);
+        if(availableCars!=null){
+        Intent intent = new Intent(DriverActivity.this,DriverCodeActivity.class);
+        intent.putExtra(App.Content,availableCars);
+        startActivity(intent);
+        finish();}
+        else if(BookedDriverAcceptedHiredDataString!=null){
+
+            Intent intent = new Intent(DriverActivity.this,WaitingForPassengerActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
+
+
     }
 
     @Override
@@ -242,9 +258,13 @@ public class DriverActivity extends AppCompatActivity implements
             holder.card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    Utils.SaveString(App.CarRequestData,DriverActivity.this,new Gson().toJson(availableCars));
+
                     Intent intent = new Intent(DriverActivity.this,DriverCodeActivity.class);
                     intent.putExtra(App.Content,new Gson().toJson(availableCars));
-                    startActivityForResult(intent,requestCode);
+                   startActivity(intent);
+                   finish();
 
                 }
             });
