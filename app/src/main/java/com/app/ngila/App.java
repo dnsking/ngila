@@ -30,6 +30,7 @@ public class App extends Application {
 
 
     public static  final String Order = "Order";
+    public static  final String Cancel = "Cancel";
 
 
     public static  final String CarRequestData= "CarRequestData";

@@ -19,12 +19,14 @@ import com.app.ngila.utils.Utils;
 import com.app.ngila.views.TimelineViewHelper;
 import com.github.vipulasri.timelineview.TimelineView;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -48,6 +50,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import pl.tajchert.nammu.Nammu;
+
 public class NewPassengerBookingMainActivity extends AppCompatActivity  implements
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
@@ -65,6 +69,7 @@ public class NewPassengerBookingMainActivity extends AppCompatActivity  implemen
     private TimelineViewHelper.TimeLineItem timeLineItemPickup;
     private TimelineViewHelper.TimeLineItem timeLineItemDestination;
     private Button bookBtn;
+    private Marker[] markers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,13 +111,8 @@ public class NewPassengerBookingMainActivity extends AppCompatActivity  implemen
 
                 autocompleteFragment.setText(place.getAddress());
 
+                animatePosition();
 
-                new TaskDirectionRequest().execute(buildRequestUrl(mOrigin,mDestination));
-
-                mMap.addMarker(new MarkerOptions().position(mOrigin).title("Pick Up"));
-                mMap.addMarker(new MarkerOptions().position(mDestination).title("Destination"));
-
-                bookBtn.setEnabled(true);
 
             }
 
@@ -178,18 +178,38 @@ public class NewPassengerBookingMainActivity extends AppCompatActivity  implemen
                 mDestination =arg0;
 
                 bookBtn.setEnabled(true);
-
-
-                new TaskDirectionRequest().execute(buildRequestUrl(mOrigin,mDestination));
-
-                mMap.addMarker(new MarkerOptions().position(mOrigin).title("Pick Up"));
-                mMap.addMarker(new MarkerOptions().position(mDestination).title("Destination"));
+                animatePosition();
 
 
             }
         });
 
     }
+    private void animatePosition(){
+
+        new TaskDirectionRequest().execute(buildRequestUrl(mOrigin,mDestination));
+        if (markers != null) {
+            for (Marker m : markers) {
+                m.remove();
+            }
+        }
+
+        markers = new Marker[]{
+                mMap.addMarker(new MarkerOptions().position(mOrigin).title("Pick Up").icon(Utils.CarIconSmall(this)))   ,
+                mMap.addMarker(new MarkerOptions().position(mDestination).title("Destination").icon(Utils.CarIconSmall(this)))
+        };
+
+
+        LatLngBounds.Builder b = new LatLngBounds.Builder();
+        for (Marker m : markers) {
+            b.include(m.getPosition());
+        }
+        LatLngBounds bounds = b.build();
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 15);
+        mMap.animateCamera(cu);
+
+    }
+
 
     /**
      * Create requested url for Direction API to get routes from origin to destination
@@ -291,6 +311,8 @@ public class NewPassengerBookingMainActivity extends AppCompatActivity  implemen
         @Override
         protected void onPostExecute(String responseString) {
             super.onPostExecute(responseString);
+
+            App.Log("TaskDirectionRequest responseString "+responseString);
             //Json object parsing
             TaskParseDirection parseResult = new TaskParseDirection();
             parseResult.execute(responseString);
@@ -316,12 +338,12 @@ public class NewPassengerBookingMainActivity extends AppCompatActivity  implemen
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
             super.onPostExecute(lists);
-            ArrayList points = null;
+            ArrayList<LatLng> points = null;
             PolylineOptions polylineOptions = null;
             distanceInKm = 0;
 
             for (List<HashMap<String, String>> path : lists) {
-                points = new ArrayList();
+                points = new ArrayList<LatLng>();
                 polylineOptions = new PolylineOptions();
 
                 for (HashMap<String, String> point : path) {
@@ -342,9 +364,10 @@ public class NewPassengerBookingMainActivity extends AppCompatActivity  implemen
 
                 try{
 
-                    timeLineItemDestination = new TimelineViewHelper.TimeLineItem(Utils.AdressName(NewPassengerBookingMainActivity.this
-                            ,mDestination.latitude,mDestination.longitude),distanceInKm+"km Price "+
-                            Utils.PricePerKm*distanceInKm,0);
+                    timeLineItemDestination = new  TimelineViewHelper.TimeLineItem(Utils.AdressName(NewPassengerBookingMainActivity.this
+                            ,mDestination.latitude,mDestination.longitude),
+                            Utils.RoundOff(distanceInKm/1000.0)+" KM Price "+
+                                    Utils.RoundOff(  Utils.PricePerKm*(distanceInKm/1000.0)),0);
                     TimelineViewHelper.InitList(timeline,new TimelineViewHelper.TimeLineItem[]{
                             timeLineItemPickup,timeLineItemDestination
                     });
@@ -352,8 +375,9 @@ public class NewPassengerBookingMainActivity extends AppCompatActivity  implemen
                 catch (Exception ex){}
                 polylineOptions.addAll(points);
                 polylineOptions.width(15f);
-                polylineOptions.color(Color.BLUE);
+                polylineOptions.color(Color.BLACK);
                 polylineOptions.geodesic(true);
+
             }
             if (polylineOptions != null) {
                 mMap.addPolyline(polylineOptions);
@@ -444,6 +468,11 @@ public class NewPassengerBookingMainActivity extends AppCompatActivity  implemen
             }
             return poly;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Nammu.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
 

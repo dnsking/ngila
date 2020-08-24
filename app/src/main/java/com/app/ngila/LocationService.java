@@ -6,9 +6,12 @@ import android.os.Handler;
 import android.os.IBinder;
 
 import com.app.ngila.data.AvailableCars;
+import com.app.ngila.data.NgilaUser;
 import com.app.ngila.locationhandler.SingleShotLocationProvider;
 import com.app.ngila.network.NetworkContentHelper;
+import com.app.ngila.network.actions.AddDriverLocation;
 import com.app.ngila.network.actions.DriverCarOwnerContract;
+import com.app.ngila.network.actions.DriverWaiting;
 import com.app.ngila.network.actions.SignInNetworkAction;
 import com.app.ngila.utils.Utils;
 import com.google.android.gms.maps.model.LatLng;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 import okhttp3.Response;
 
 public class LocationService extends Service {
+    NgilaUser ngilaUser;
     public LocationService() {
     }
 
@@ -37,6 +41,7 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        ngilaUser = Utils.GetNgilaUser(this);
 
 
         Handler handler = new Handler();
@@ -60,6 +65,23 @@ public class LocationService extends Service {
                             new SingleShotLocationProvider.LocationCallback() {
                                 @Override
                                 public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
+
+                                    AddDriverLocation addDriverLocation = new AddDriverLocation(
+                                            ngilaUser.getPhoneNumber(),
+                                            Utils.LatLonOBjToString(new LatLng(location.latitude, location.longitude)
+                                    ));
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            try {
+                                                NetworkContentHelper.AddContent(LocationService.this,addDriverLocation);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }).start();
 
                                 }
                             });

@@ -98,6 +98,14 @@ public class Utils {
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
         return BitmapDescriptorFactory.fromBitmap(smallMarker);
     }
+    public static   BitmapDescriptor Wave(Context context){
+        int height = 100;
+        int width = 100;
+        BitmapDrawable bitmapdraw = (BitmapDrawable)context.getResources().getDrawable(R.drawable.pngwave);
+        Bitmap b = bitmapdraw.getBitmap();
+        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+        return BitmapDescriptorFactory.fromBitmap(smallMarker);
+    }
     /*
     public static void UploadImage(Context context, String name, File file){
 
@@ -283,7 +291,9 @@ public class Utils {
         }
         else {
             if (addresses.size() > 0) {
-                return  addresses.get(0).getFeatureName() + ", " + addresses.get(0).getLocality() ;
+                if(addresses.get(0).getThoroughfare()!=null)
+                    return addresses.get(0).getThoroughfare();
+                return  addresses.get(0).getAddressLine(0)  ;
             }
         }
         return "Unknown Location";

@@ -281,11 +281,13 @@ public class CarOwnerActivity extends AppCompatActivity implements
         }
         else if(bookedDriver.equals(App.BookedDriverAcceptedHired)){
 
-            findViewById(R.id.connectionHolder).setVisibility(View.VISIBLE);
            final DriverCarOwnerContract acceptedDriver =
                     new Gson().fromJson(Utils.GetString(App.BookedDriverAcceptedHiredData,this),DriverCarOwnerContract.class);
 
-            new Thread(new Runnable() {
+           Intent intent = new Intent(this,CarBookedActivity.class);
+           startActivity(intent);
+           finish();
+       /*     new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try{
@@ -322,7 +324,7 @@ public class CarOwnerActivity extends AppCompatActivity implements
                     }
                 }
             }).start();
-        }
+      */  }
 
     }
     private void showNewBooking(){

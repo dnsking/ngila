@@ -63,7 +63,9 @@ public class CarOwnerScanActivity extends AppCompatActivity {
                                                             ngilaDriverUser.getPhoneNumber(),locationStr
                                                             ,App.DriverContractStarted);
                                                     NetworkContentHelper.AddContent(CarOwnerScanActivity.this,driverCarOwnerContract);}
-                                                catch (Exception ex){}
+                                                catch (Exception ex){
+
+                                                }
                                                 finish();
                                             }
                                         }).start();

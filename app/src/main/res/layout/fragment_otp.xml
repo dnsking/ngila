@@ -24,7 +24,7 @@
             android:textSize      = "18sp"
             android:fontFamily      = "sans-serif-light"
             android:text="A verification code was sent to"
-            android:textColor="#212121"
+            android:textColor="#fff"
             android:layout_gravity="center"
             android:textAlignment="center"/>
 
@@ -35,9 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="72dp"
             android:inputType="number"
-            android:textColor="#212121"
+            android:textColor="#fff"
             app:itemCount="4"
-            app:lineColor="#4caf50"
+            app:lineColor="#fff"
             app:viewType="rectangle"
             android:layout_gravity="center"
             />
@@ -70,7 +70,7 @@
             android:textSize      = "18sp"
             android:fontFamily      = "sans-serif-light"
             android:text="Resend verification code in "
-            android:textColor="#212121"
+            android:textColor="#fff"
             android:layout_gravity="center"
             android:textAlignment="center"/>
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

@@ -3,15 +3,20 @@ package com.app.ngila.network.actions;
 public class AddPassengerPickUp extends NetworkAction{
     private String action = "AddPassengerPickUp";
     private String city;
-    private String location;
-    private String destination;
     private String phoneNumber;
+    private String passengerLocation;
+    private String orderTime ;
+    private String destinationName ;
+    private String destination;
     public AddPassengerPickUp(){}
-    public AddPassengerPickUp(String city, String location,String destination,String phoneNumber){
+    public AddPassengerPickUp(String city,String phoneNumber,String passengerLocation,String orderTime, String destinationName
+            , String destination){
         this.city = city;
-        this.location = location;
-        this.destination = destination;
         this.phoneNumber = phoneNumber;
+        this.passengerLocation = passengerLocation;
+        this.orderTime = orderTime;
+        this.destinationName = destinationName;
+        this.destination = destination;
     }
     @Override
     public String getAction() {
@@ -39,19 +44,35 @@ public class AddPassengerPickUp extends NetworkAction{
         this.city = city;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public String getDestination() {
         return destination;
     }
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public String getPassengerLocation() {
+        return passengerLocation;
+    }
+
+    public void setPassengerLocation(String passengerLocation) {
+        this.passengerLocation = passengerLocation;
+    }
+
+    public String getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(String orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    public String getDestinationName() {
+        return destinationName;
+    }
+
+    public void setDestinationName(String destinationName) {
+        this.destinationName = destinationName;
     }
 }
